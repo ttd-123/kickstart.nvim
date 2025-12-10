@@ -166,6 +166,17 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- File specific tab and shift settings
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'lua',
+  callback = function()
+    vim.bo.expandtab = true
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+    vim.bo.tabstop = 2
+  end,
+})
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 -- Clear highlights on search when pressing <Esc> in normal mode
@@ -209,6 +220,11 @@ vim.keymap.set('n', '<C-S-h>', '<C-w>H', { desc = 'Move window to the left' })
 vim.keymap.set('n', '<C-S-l>', '<C-w>L', { desc = 'Move window to the right' })
 vim.keymap.set('n', '<C-S-j>', '<C-w>J', { desc = 'Move window to the lower' })
 vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
+-- Window closing and splitting
+vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = '[W]indow [Q]uit' })
+vim.keymap.set('n', '<leader>ws', '<C-w>s', { desc = '[W]indow [S]plit horizontal' })
+vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = '[W]indow [V]ertical Split' })
+vim.keymap.set('n', '<leader>wd', ':bd<CR>', { desc = '[W]indow [D]elete (buffer delete)' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -234,6 +250,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     error('Error cloning lazy.nvim:\n' .. out)
   end
 end
+
+-- [[ Require additional config modules ]]
+require 'config.repl'
 
 ---@type vim.Option
 local rtp = vim.opt.rtp
@@ -287,11 +306,65 @@ require('lazy').setup({
     --     changedelete = { text = '~' },
     --   },
     -- },
+    config = function()
+      require('gitsigns').setup {
+        -- Your gitsigns configuration here
+      }
+      -- Keymaps for navigating hunks
+      vim.keymap.set('n', ']c', function()
+        ---@diagnostic disable-next-line: param-type-mismatch
+        require('gitsigns').nav_hunk 'next'
+      end, { desc = 'Next Git hunk' })
+
+      vim.keymap.set('n', '[c', function()
+        ---@diagnostic disable-next-line: param-type-mismatch
+        require('gitsigns').nav_hunk 'prev'
+      end, { desc = 'Previous Git hunk' })
+
+      vim.keymap.set('n', ']C', function()
+        ---@diagnostic disable-next-line: param-type-mismatch
+        require('gitsigns').nav_hunk 'first'
+      end, { desc = 'First Git hunk' })
+
+      vim.keymap.set('n', '[C', function()
+        ---@diagnostic disable-next-line: param-type-mismatch
+        require('gitsigns').nav_hunk 'last'
+      end, { desc = 'Last Git hunk' })
+    end,
   },
   {
-    'tpope/vim-fugitive'
+    'tpope/vim-fugitive',
   },
-
+  {
+    'github/copilot.vim',
+  },
+  {
+    'olimorris/codecompanion.nvim',
+    opts = {
+      ignore_warnings = true,
+    },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+  },
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      'nvim-tree/nvim-web-devicons', -- optional, but recommended
+    },
+    lazy = false, -- neo-tree will lazily load itself
+    config = function()
+      require('neo-tree').setup {
+        -- neo-tree setup here
+      }
+      -- Keymap to toggle neo-tree
+      vim.keymap.set('n', '<leader>a', ':Neotree toggle<CR>', { desc = 'Toggle Neo-Tree' })
+    end,
+  },
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -590,6 +663,7 @@ require('lazy').setup({
             if vim.fn.has 'nvim-0.11' == 1 then
               return client:supports_method(method, bufnr)
             else
+              ---@diagnostic disable-next-line: param-type-mismatch
               return client.supports_method(method, { bufnr = bufnr })
             end
           end
