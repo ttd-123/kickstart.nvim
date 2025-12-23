@@ -302,85 +302,64 @@ require('lazy').setup({
   -- options to `gitsigns.nvim`.
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    -- opts = {
-    --   signs = {
-    --     add = { text = '+' },
-    --     change = { text = '~' },
-    --     delete = { text = '_' },
-    --     topdelete = { text = '‾' },
-    --     changedelete = { text = '~' },
-    --   },
-    -- },
-    config = function()
-      require('gitsigns').setup {
-        -- Your gitsigns configuration here
-      }
-      -- Keymaps for navigating hunks
-      vim.keymap.set('n', ']c', function()
-        ---@diagnostic disable-next-line: param-type-mismatch
-        require('gitsigns').nav_hunk 'next'
-      end, { desc = 'Next Git hunk' })
+  -- { -- Adds git related signs to the gutter, as well as utilities for managing changes
+  -- 'lewis6991/gitsigns.nvim',
+  -- opts = {
+  --   signs = {
+  --     add = { text = '+' },
+  --     change = { text = '~' },
+  --     delete = { text = '_' },
+  --     topdelete = { text = '‾' },
+  --     changedelete = { text = '~' },
+  --   },
+  -- },
+  --   config = function()
+  --     require('gitsigns').setup {
+  --       -- Your gitsigns configuration here
+  --     }
+  -- },
 
-      vim.keymap.set('n', '[c', function()
-        ---@diagnostic disable-next-line: param-type-mismatch
-        require('gitsigns').nav_hunk 'prev'
-      end, { desc = 'Previous Git hunk' })
-
-      vim.keymap.set('n', ']C', function()
-        ---@diagnostic disable-next-line: param-type-mismatch
-        require('gitsigns').nav_hunk 'last'
-      end, { desc = 'Last Git hunk' })
-
-      vim.keymap.set('n', '[C', function()
-        ---@diagnostic disable-next-line: param-type-mismatch
-        require('gitsigns').nav_hunk 'first'
-      end, { desc = 'First Git hunk' })
-    end,
-  },
-
-  {
-    'tpope/vim-fugitive',
-  },
-  {
-    'github/copilot.vim',
-  },
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    ft = { 'markdown', 'codecompanion' },
-  },
-  {
-    'olimorris/codecompanion.nvim',
-    opts = {
-      ignore_warnings = true,
-    },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    config = function(_, opts)
-      require('codecompanion').setup(opts)
-      vim.keymap.set('n', '<leader>ac', ':CodeCompanionChat Toggle<CR>', { desc = 'Toggle CodeCompanionChat' })
-    end,
-  },
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons', -- optional, but recommended
-    },
-    lazy = false, -- neo-tree will lazily load itself
-    config = function()
-      require('neo-tree').setup {
-        -- neo-tree setup here
-      }
-      -- Keymap to toggle neo-tree
-      vim.keymap.set('n', '<leader>af', ':Neotree toggle<CR>', { desc = 'Toggle Neo-Tree' })
-    end,
-  },
+  -- {
+  --   'tpope/vim-fugitive',
+  -- },
+  -- {
+  --   'github/copilot.vim',
+  -- },
+  -- {
+  --   'MeanderingProgrammer/render-markdown.nvim',
+  --   ft = { 'markdown', 'codecompanion' },
+  -- },
+  -- {
+  --   'olimorris/codecompanion.nvim',
+  --   opts = {
+  --     --ignore_warnings = true,
+  --   },
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-treesitter/nvim-treesitter',
+  --   },
+  --   config = function(_, opts)
+  --     require('codecompanion').setup(opts)
+  --     vim.keymap.set('n', '<leader>ac', ':CodeCompanionChat Toggle<CR>', { desc = 'Toggle CodeCompanionChat' })
+  --   end,
+  -- },
+  -- {
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = 'v3.x',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'MunifTanjim/nui.nvim',
+  --     'nvim-tree/nvim-web-devicons', -- optional, but recommended
+  --   },
+  --   lazy = false, -- neo-tree will lazily load itself
+  --   config = function()
+  --     require('neo-tree').setup {
+  --       -- neo-tree setup here
+  --     }
+  --     -- Keymap to toggle neo-tree
+  --     vim.keymap.set('n', '<leader>af', ':Neotree toggle<CR>', { desc = 'Toggle Neo-Tree' })
+  --   end,
+  -- },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -1085,13 +1064,17 @@ require('lazy').setup({
   --
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns',
+  require 'kickstart.plugins.fugitive',
+  require 'kickstart.plugins.copilot',
+  require 'kickstart.plugins.render-markdown',
+  require 'kickstart.plugins.codecompanion',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.

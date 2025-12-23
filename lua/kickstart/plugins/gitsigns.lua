@@ -20,17 +20,37 @@ return {
           if vim.wo.diff then
             vim.cmd.normal { ']c', bang = true }
           else
+            ---@diagnostic disable-next-line: param-type-mismatch
             gitsigns.nav_hunk 'next'
           end
         end, { desc = 'Jump to next git [c]hange' })
+
+        map('n', ']C', function()
+          if vim.wo.diff then
+            vim.cmd.normal { ']C', bang = true }
+          else
+            ---@diagnostic disable-next-line: param-type-mismatch
+            gitsigns.nav_hunk 'last'
+          end
+        end, { desc = 'Jump to last git [C]hange' })
 
         map('n', '[c', function()
           if vim.wo.diff then
             vim.cmd.normal { '[c', bang = true }
           else
+            ---@diagnostic disable-next-line: param-type-mismatch
             gitsigns.nav_hunk 'prev'
           end
         end, { desc = 'Jump to previous git [c]hange' })
+
+        map('n', '[C', function()
+          if vim.wo.diff then
+            vim.cmd.normal { '[C', bang = true }
+          else
+            ---@diagnostic disable-next-line: param-type-mismatch
+            gitsigns.nav_hunk 'first'
+          end
+        end, { desc = 'Jump to first git [C]hange' })
 
         -- Actions
         -- visual mode
@@ -50,6 +70,7 @@ return {
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
         map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
         map('n', '<leader>hD', function()
+          ---@diagnostic disable-next-line: param-type-mismatch
           gitsigns.diffthis '@'
         end, { desc = 'git [D]iff against last commit' })
         -- Toggles
