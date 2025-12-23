@@ -347,6 +347,10 @@ require('lazy').setup({
     'github/copilot.vim',
   },
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = { 'markdown', 'codecompanion' },
+  },
+  {
     'olimorris/codecompanion.nvim',
     opts = {
       ignore_warnings = true,
@@ -992,20 +996,18 @@ require('lazy').setup({
     --   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
     --   vim.cmd.colorscheme 'tokyonight-night'
     -- end,
-    'rose-pine/neovim',
+    'vague-theme/vague.nvim',
+    lazy = false,
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('rose-pine').setup {
-        styles = {
-          italic = false,
-        },
+      require('vague').setup {
+        -- Optional theme settings
+        italic = false,
       }
-
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'rose-pine-moon'
+      vim.cmd.colorscheme 'vague'
     end,
   },
 
