@@ -39,8 +39,15 @@ vim.keymap.set('v', '<leader>r', function()
     lines[1] = string.sub(lines[1], start_col)
     lines[#lines] = string.sub(lines[#lines], 1, end_col)
   end
-  local text = table.concat(lines, '\n')
-  send_to_terminal(text)
+  -- Remove blank lines
+  local filtered = {}
+  for _, line in ipairs(lines) do
+    if not line:match '^%s*$' then
+      table.insert(filtered, line)
+    end
+  end
+  local text = table.concat(filtered, '\n')
+  send_to_terminal(text .. '\n')
 end, { desc = 'Run selection in terminal' })
 
 vim.keymap.set('n', '<leader>r', function()
@@ -48,6 +55,7 @@ vim.keymap.set('n', '<leader>r', function()
   send_to_terminal(line)
 end, { desc = 'Run line in terminal' })
 
-vim.keymap.set('n', '<leader>pi', function()
-  vim.cmd 'split | terminal source .venv/bin/activate && python'
+vim.keymap.set({ 'n', 'v' }, '<leader>R', function()
+  vim.cmd 'vsplit | terminal source .venv/bin/activate && python'
+  vim.cmd 'wincmd p'
 end, { desc = 'Start interactive Python terminal' })

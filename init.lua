@@ -225,6 +225,13 @@ vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = '[W]indow [Q]uit' })
 vim.keymap.set('n', '<leader>ws', '<C-w>s', { desc = '[W]indow [S]plit horizontal' })
 vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = '[W]indow [V]ertical Split' })
 vim.keymap.set('n', '<leader>wd', ':bd<CR>', { desc = '[W]indow [D]elete (buffer delete)' })
+vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Current [W]indow [O]nly (full screen)' })
+
+vim.keymap.set('n', '<leader>D', 'yyp', { desc = 'Duplicate line below' })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Expand CC to CodeCompanion in command mode
+vim.cmd [[cnoreabbrev CC CodeCompanion]]
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -323,15 +330,16 @@ require('lazy').setup({
 
       vim.keymap.set('n', ']C', function()
         ---@diagnostic disable-next-line: param-type-mismatch
-        require('gitsigns').nav_hunk 'first'
-      end, { desc = 'First Git hunk' })
+        require('gitsigns').nav_hunk 'last'
+      end, { desc = 'Last Git hunk' })
 
       vim.keymap.set('n', '[C', function()
         ---@diagnostic disable-next-line: param-type-mismatch
-        require('gitsigns').nav_hunk 'last'
-      end, { desc = 'Last Git hunk' })
+        require('gitsigns').nav_hunk 'first'
+      end, { desc = 'First Git hunk' })
     end,
   },
+
   {
     'tpope/vim-fugitive',
   },
@@ -347,6 +355,10 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
     },
+    config = function(_, opts)
+      require('codecompanion').setup(opts)
+      vim.keymap.set('n', '<leader>ac', ':CodeCompanionChat Toggle<CR>', { desc = 'Toggle CodeCompanionChat' })
+    end,
   },
   {
     'nvim-neo-tree/neo-tree.nvim',
@@ -362,9 +374,10 @@ require('lazy').setup({
         -- neo-tree setup here
       }
       -- Keymap to toggle neo-tree
-      vim.keymap.set('n', '<leader>a', ':Neotree toggle<CR>', { desc = 'Toggle Neo-Tree' })
+      vim.keymap.set('n', '<leader>af', ':Neotree toggle<CR>', { desc = 'Toggle Neo-Tree' })
     end,
   },
+
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
