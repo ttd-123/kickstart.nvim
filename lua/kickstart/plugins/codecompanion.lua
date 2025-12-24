@@ -3,20 +3,25 @@ return {
   opts = {
     strategies = {
       chat = {
-        adapter = 'copilot',
+        adapter = 'anthropic',
+        model = 'claude-sonnet-4-5-20250929',
+      },
+      inline = {
+        adapter = 'anthropic',
+        model = 'claude-sonnet-4-5-20250929',
       },
     },
-    adapters = {
-      copilot = function()
-        return require('codecompanion.adapters').extend('copilot', {
-          schema = {
-            model = {
-              default = 'claude-sonnet-4.5',
-            },
-          },
-        })
-      end,
-    },
+    -- adapters = {
+    --   copilot = function()
+    --     return require('codecompanion.adapters').extend('copilot', {
+    --       schema = {
+    --         model = {
+    --           default = 'claude-sonnet-4.5',
+    --         },
+    --       },
+    --     })
+    --   end,
+    -- },
   },
   dependencies = {
     'nvim-lua/plenary.nvim',
