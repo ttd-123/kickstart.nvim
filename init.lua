@@ -259,7 +259,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 
 -- [[ Require additional config modules ]]
-require 'config.repl'
+-- require 'config.repl'
 
 ---@type vim.Option
 local rtp = vim.opt.rtp
